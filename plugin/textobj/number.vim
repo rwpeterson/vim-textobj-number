@@ -57,21 +57,34 @@ let s:CURRENCY = '\%(\%([$£€¥₿¤]\|\u\{3}\|\u\{1,3}$\) \=\)\='
 let s:SUFFIX = '\%([¢kMBT]\|st\|nd\|rd\|th\)\='
 
 " Matches written numbers with US, European, or ISO digit-grouping, with
+" optional initial minus sign.
+let s:STYLED = '-\=\d\{1,4}\%([\., ]\d\{3}\)*\%([\.,]\d\+\)\='
+
+" Matches written numbers with US, European, or ISO digit-grouping, with
 " optional initial minus sign and currency symbol/code, and optional suffix.
-let s:STYLED = '-\='
-\              . s:CURRENCY
-\              . '\d\{1,4}\%([\., ]\d\{3}\)*\%([\.,]\d\+\)\='
-\              . s:SUFFIX
+let s:STYLED_C = '-\='
+\                . s:CURRENCY
+\                . '\d\{1,4}\%([\., ]\d\{3}\)*\%([\.,]\d\+\)\='
+\                . s:SUFFIX
 
 " Matches written values of hex, oct, and bin:
 let s:HEX = '0[xX]\x\+'
 let s:OCT = '0[oO]\o\+'
 let s:BIN = '0[bB][01]\+'
 
-" Put them together:
+" Regex for inside text object
 let s:NUMBER = '\%('
 \              .        '\%(' . s:FLOAT . s:E . '\)'
 \              . '\|' . '\%(' . s:STYLED . '\)'
+\              . '\|' . '\%(' . s:HEX . '\)'
+\              . '\|' . '\%(' . s:OCT . '\)'
+\              . '\|' . '\%(' . s:BIN . '\)'
+\              . '\)'
+
+" Regex for around text object
+let s:NUMBER_C = '\%('
+\              .        '\%(' . s:FLOAT . s:E . '\)'
+\              . '\|' . '\%(' . s:STYLED_C . '\)'
 \              . '\|' . '\%(' . s:HEX . '\)'
 \              . '\|' . '\%(' . s:OCT . '\)'
 \              . '\|' . '\%(' . s:BIN . '\)'
@@ -82,8 +95,12 @@ let s:NUMBER = '\%('
 " textobj#user#plugin would need to be replaced by separate functions for a
 " and i.
 call textobj#user#plugin('number', {
-\   '-': {
+\   'number': {
 \       'pattern': s:NUMBER,
 \       'select': ['an', 'in'],
+\   },
+\   'currency': {
+\       'pattern': s:NUMBER_C,
+\       'select': ['a$', 'i$'],
 \   },
 \})
