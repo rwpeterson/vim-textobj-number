@@ -1,0 +1,82 @@
+*textobj-number.txt*    Text objects for numbers
+
+Version: 0.0.1
+Copyright (C) 2020 Bob Peterson
+License: MIT license  {{{
+    Permission is hereby granted, free of charge, to any person obtaining
+    a copy of this software and associated documentation files (the
+    "Software"), to deal in the Software without restriction, including
+    without limitation the rights to use, copy, modify, merge, publish,
+    distribute, sublicense, and/or sell copies of the Software, and to
+    permit persons to whom the Software is furnished to do so, subject to
+    the following conditions:
+
+    The above copyright notice and this permission notice shall be included
+    in all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+    OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+    MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+    IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+    CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+    TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+    SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+}}}
+
+CONTENTS                                        *textobj-number-contents*
+
+Introduction                                    |textobj-number-introduction|
+Interface                                       |textobj-number-interface|
+Bugs                                            |textobj-number-bugs|
+ChangeLog                                       |textobj-number-changelog|
+
+==============================================================================
+INTRODUCTION                                    *textobj-number-introduction*
+
+textobj-number is a Vim plugin to provide text objects for formatted numbers.
+This is an improvement over the builtin 'w' text object since it distinguishes
+digit grouping and decimal points from puctuation following the number. In
+addition, it can even recognize numbers with a space as the thousands
+separator (the ISO standard, and common in Europe). It also recognizes
+currency symbols/codes before the number, and common size suffixes after.
+
+Requirements:
+- textobj-user (vimscript#2100) <https://github.com/kana/vim-textobj-user>
+
+==============================================================================
+INTERFACE                                       *textobj-number-interface*
+
+textobj-number selects numbers with a variety of formatting options.
+
+<Plug>(textobj-number-number)
+        Selects a number, supporting:
+        - Minus sign in front of number (-1)
+        - Thousands separator: space, period, comma
+        - Decimal point: period, comma
+        - E-notation for powers of ten (4.7e-6)
+        - Padded zeros and missing zeros (e.g. 000 and .5)
+        separator; a period or comma as decimal point; a fractional
+        decimal part without separators; and e-notation for powers of ten.
+
+        Bound to 'an' and 'in' by default.
+
+<Plug>(textobj-number-currency)
+        Same as above, but also matches:
+        - prefixes for common currency symbols, ISO currency codes, and
+          variations on $ such as C$ or NZ$
+        - suffixes for ¢ and common order-of-magnitude abbrevations k, M, B,
+          and T used with currency
+
+        Bound to 'a$' and 'i$' by default.
+        
+==============================================================================
+BUGS                                            *textobj-number-bugs*
+
+Please report any bugs at the project homepage:
+<https://github.com/rwpeterson/vim-textobj-number>
+
+==============================================================================
+CHANGELOG                                       *textobj-number-changelog*
+
+0.0.1   2020-04-26                      *textobj-number-changelog-0.0.1*
+        Initial release
